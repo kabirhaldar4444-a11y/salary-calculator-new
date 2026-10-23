@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="An Indian salary structure calculator for annual CTC, PF, gratuity, allowances, and monthly take-home before tax."
+    />
+    <meta name="theme-color" content="#13253f" />
+    <title>Salary Structure Calculator</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#calculator">Skip to calculator</a>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Salary Structure Calculator home">
+        <span class="brand-mark" aria-hidden="true">₹</span>
+        <span>Salary Structure</span>
+      </a>
+      <div class="header-note">India payroll model</div>
+    </header>
+
+    <main id="top">
+      <section class="hero" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">CTC breakdown</p>
+          <h1 id="page-title">See where your annual salary goes.</h1>
+          <p class="hero-intro">
+            Adjust the salary assumptions and get a clear annual and monthly breakdown of earnings,
+            provident fund, gratuity, and estimated take-home before income tax.
+          </p>
+        </div>
+        <div class="hero-total" aria-live="polite">
+          <span>Annual CTC</span>
+          <strong id="hero-ctc">₹20,00,000</strong>
+          <small id="hero-monthly-ctc">₹1,66,667 per month</small>
+        </div>
+      </section>
+
+      <section class="calculator-shell" id="calculator" aria-label="Salary calculator">
+        <aside class="input-panel">
+          <div class="panel-heading">
+            <p class="eyebrow">Your assumptions</p>
+            <h2>Build your structure</h2>
+          </div>
+
+          <form id="salary-form" novalidate>
+            <fieldset>
+              <legend>Pay mix</legend>
+
+              <label class="field" for="annualCtc">
+                <span>Annual CTC</span>
+                <span class="money-input">
+                  <span aria-hidden="true">₹</span>
+                  <input id="annualCtc" name="annualCtc" type="number" min="0" step="10000" inputmode="decimal" />
+                </span>
+              </label>
+
+              <div class="preset-row" aria-label="Annual CTC presets">
+                <button type="button" class="preset" data-ctc="1200000">₹12L</button>
+                <button type="button" class="preset" data-ctc="2000000">₹20L</button>
+                <button type="button" class="preset" data-ctc="3000000">₹30L</button>
+                <button type="button" class="preset" data-ctc="5000000">₹50L</button>
+              </div>
+
+              <div class="field-grid">
+                <label class="field" for="basicPercent">
+                  <span>Basic salary</span>
+                  <span class="suffix-input">
+                    <input id="basicPercent" name="basicPercent" type="number" min="0" max="100" step="0.1" />
+                    <span aria-hidden="true">%</span>
+                  </span>
+                  <small>Percentage of annual CTC</small>
+                </label>
+
+                <label class="field" for="hraPercent">
+                  <span>HRA</span>
+                  <span class="suffix-input">
+                    <input id="hraPercent" name="hraPercent" type="number" min="0" max="100" step="0.1" />
+                    <span aria-hidden="true">%</span>
+                  </span>
+                  <small>Percentage of basic salary</small>
+                </label>
+              </div>
+
+              <label class="field" for="siteAllowance">
+                <span>Site / project allowance</span>
+                <span class="money-input compact">
+                  <span aria-hidden="true">₹</span>
+                  <input id="siteAllowance" name="siteAllowance" type="number" min="0" step="1000" />
+                </span>
+                <small>Annual amount included within CTC</small>
+              </label>
+
+              <label class="field" for="otherBenefits">
+                <span>Other benefits</span>
+                <span class="money-input compact">
+                  <span aria-hidden="true">₹</span>
+                  <input id="otherBenefits" name="otherBenefits" type="number" min="0" step="1000" />
+                </span>
+                <small>Annual amount included within CTC</small>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Provident fund and gratuity</legend>
+
+              <label class="toggle-row" for="pfApplicable">
+                <span>
+                  <strong>PF applicable</strong>
+                  <small>Include employee and employer PF</small>
+                </span>
+                <input id="pfApplicable" name="pfApplicable" type="checkbox" role="switch" />
+              </label>
+
+              <div class="conditional-fields" id="pf-fields">
+                <div class="field-grid">
+                  <label class="field" for="pfRate">
+                    <span>PF rate</span>
+                    <span class="suffix-input">
+                      <input id="pfRate" name="pfRate" type="number" min="0" max="100" step="0.1" />
+                      <span aria-hidden="true">%</span>
+                    </span>
+                  </label>
+
+                  <label class="field" for="pfCeiling">
+                    <span>Monthly wage ceiling</span>
+                    <span class="money-input compact">
+                      <span aria-hidden="true">₹</span>
+                      <input id="pfCeiling" name="pfCeiling" type="number" min="0" step="500" />
+                    </span>
+                  </label>
+                </div>
+
+                <label class="toggle-row inset" for="pfHigherWages">
+                  <span>
+                    <strong>PF on higher wages</strong>
+                    <small>Use full basic wage instead of the ceiling</small>
+                  </span>
+                  <input id="pfHigherWages" name="pfHigherWages" type="checkbox" role="switch" />
+                </label>
+              </div>
+
+              <label class="field" for="gratuityRate">
+                <span>Gratuity rate</span>
+                <span class="suffix-input">
+                  <input id="gratuityRate" name="gratuityRate" type="number" min="0" max="100" step="0.0001" />
+                  <span aria-hidden="true">%</span>
+                </span>
+                <small>Sheet default: 15 / 26 / 12 = 4.8077%</small>
+              </label>
+            </fieldset>
+
+            <fieldset>
+              <legend>Outside annual CTC</legend>
+              <label class="field" for="projectBonus">
+                <span>Project completion bonus</span>
+                <span class="money-input compact">
+                  <span aria-hidden="true">₹</span>
+                  <input id="projectBonus" name="projectBonus" type="number" min="0" step="10000" />
+                </span>
+                <small>Shown separately and excluded from the CTC reconciliation</small>
+              </label>
+            </fieldset>
+
+            <button class="secondary-button reset-button" type="button" id="reset-button">Reset assumptions</button>
+          </form>
+        </aside>
+
+        <div class="results-panel">
+          <div class="results-toolbar">
+            <div>
+              <p class="eyebrow">Your result</p>
+              <h2>Monthly salary view</h2>
+            </div>
+            <div class="toolbar-actions">
+              <button type="button" class="secondary-button" id="download-button">Download CSV</button>
+              <button type="button" class="primary-button" id="print-button">Print summary</button>
+            </div>
+          </div>
+
+          <div class="warning-banner" id="structure-warning" role="alert" hidden>
+            <strong>The selected components exceed annual CTC.</strong>
+            <span>Reduce fixed components or increase CTC to restore a positive flexi allowance.</span>
+          </div>
+
+          <section class="summary-grid" aria-label="Salary summary">
+            <article class="summary-card highlight-card">
+              <span>Estimated monthly take-home</span>
+              <strong id="monthly-take-home">₹0</strong>
+              <small>Before income tax and other deductions</small>
+            </article>
+            <article class="summary-card">
+              <span>Monthly gross earnings</span>
+              <strong id="monthly-gross">₹0</strong>
+              <small>Before employee PF deduction</small>
+            </article>
+            <article class="summary-card">
+              <span>Employee PF per month</span>
+              <strong id="monthly-employee-pf">₹0</strong>
+              <small>Estimated payroll deduction</small>
+            </article>
+            <article class="summary-card">
+              <span>Employer contributions</span>
+              <strong id="monthly-employer-cost">₹0</strong>
+              <small>Employer PF plus gratuity provision</small>
+            </article>
+          </section>
+
+          <section class="composition-card" aria-labelledby="composition-title">
+            <div class="section-title-row">
+              <div>
+                <p class="eyebrow">Composition</p>
+                <h3 id="composition-title">Annual CTC allocation</h3>
+              </div>
+              <span id="reconciled-pill" class="status-pill">Reconciled</span>
+            </div>
+            <div class="composition-bar" id="composition-bar" aria-label="Annual CTC composition"></div>
+            <div class="composition-legend" id="composition-legend"></div>
+          </section>
+
+          <section class="table-card" aria-labelledby="breakdown-title">
+            <div class="section-title-row">
+              <div>
+                <p class="eyebrow">Detailed structure</p>
+                <h3 id="breakdown-title">Salary breakdown</h3>
+              </div>
+              <span class="table-note">Values rounded for display</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Component</th>
+                    <th scope="col">Annual</th>
+                    <th scope="col">Monthly</th>
+                    <th scope="col">% of CTC</th>
+                    <th scope="col">Basis</th>
+                  </tr>
+                </thead>
+                <tbody id="breakdown-body"></tbody>
+                <tfoot>
+                  <tr>
+                    <th scope="row">Total annual CTC</th>
+                    <td id="total-annual">₹0</td>
+                    <td id="total-monthly">₹0</td>
+                    <td>100.00%</td>
+                    <td>Reconciles to the annual CTC input</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </section>
+
+          <section class="checks-card" aria-labelledby="checks-title">
+            <div class="section-title-row">
+              <div>
+                <p class="eyebrow">Controls</p>
+                <h3 id="checks-title">Calculation checks</h3>
+              </div>
+            </div>
+            <div class="checks-grid">
+              <article>
+                <span>CTC difference</span>
+                <strong id="ctc-check">₹0</strong>
+                <small>Should remain zero</small>
+              </article>
+              <article>
+                <span>Allowance share</span>
+                <strong id="allowance-share">0.00%</strong>
+                <small id="allowance-message">Review against your payroll policy</small>
+              </article>
+              <article>
+                <span>PF monthly wage</span>
+                <strong id="pf-monthly-wage">₹0</strong>
+                <small id="pf-wage-message">Based on your PF selection</small>
+              </article>
+              <article>
+                <span>Annual gratuity provision</span>
+                <strong id="annual-gratuity">₹0</strong>
+                <small>Based on the configured gratuity rate</small>
+              </article>
+            </div>
+          </section>
+
+          <section class="bonus-card" aria-labelledby="bonus-title">
+            <div>
+              <p class="eyebrow">Separate incentive</p>
+              <h3 id="bonus-title">Project completion bonus</h3>
+              <p>Not included in the annual CTC totals above.</p>
+            </div>
+            <strong id="project-bonus-output">₹0</strong>
+          </section>
+
+          <p class="disclaimer">
+            This calculator is an illustrative salary-structure model based on the supplied spreadsheet. It does not
+            calculate income tax or confirm statutory compliance. Confirm final payroll treatment with your payroll,
+            tax, or legal adviser.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span>Salary Structure Calculator</span>
+      <span>All calculations run in your browser.</span>
+    </footer>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
+
